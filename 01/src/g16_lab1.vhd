@@ -16,39 +16,38 @@ architecture counter of g16_lab1 is
 signal count:		unsigned(15 downto 0);
 
 begin
-	process(clk)
+	process(clk, rst)
 	begin
+		-- if reset
+		if rst = '1' then
+			count <= TO_UNSIGNED(0, 16);
 		-- if enabled
-		if enable = '1' then
+		elsif enable = '1' then
 			if rising_edge(clk) then
 				-- if max_count = 0 we keep count at 0 and stop
 				if unsigned(max_count) = 0 then
 					count <= TO_UNSIGNED(0, 16);
 				-- reached max count, reset to 0
-				elsif count = unsigned(max_count) then
+				elsif (count = unsigned(max_count) and countbytwo = '0') then
 					count <= TO_UNSIGNED(0, 16);
-					-- but if countbytwo, increment by 1 again
-					if countbytwo = '1' then
-						count <= count + 1;
-					end if;
+				-- but if countby two, increment by 1 again
+				elsif (count = unsigned(max_count) and countbytwo = '1') then
+					count <= TO_UNSIGNED(1, 16);
+				-- max count - 1 but countbytwo
+				elsif (count = (unsigned(max_count) - 1) and countbytwo = '1') then
+					count <= TO_UNSIGNED(0, 16);
 				else
-					count <= count + 1;
-					-- but if countbytwo, increment by 1 again
-					if countbytwo = '1' then
-						-- reached max count, reset to 0
-						if count = unsigned(max_count) then
-							count <= TO_UNSIGNED(0, 16);
-						else
-							count <= count + 1;
-						end if;
+					if countbytwo = '0' then
+						count <= count + 1;
+					else
+						count <= count + 2;
 					end if;
 				end if;
 			end if;
 		end if;
 	end process;
 	
-	-- async reset
-	count <= TO_UNSIGNED(0, 16) when rst = '1';
+	-- wire signal to output
 	output <= std_logic_vector(count);
 				
 end counter;
