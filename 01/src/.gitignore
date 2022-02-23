@@ -53,6 +53,7 @@
 !**/class.ptf
 !*.tbd
 !*.sof
+!*.vwf
 ## tbd
 
 !*.tcl
