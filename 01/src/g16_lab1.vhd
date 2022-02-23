@@ -13,3 +13,6 @@ end g16_lab1;
 
 architecture counter of g16_lab1 is
 
+begin
+	output(0) <= countbytwo;
+end counter;
