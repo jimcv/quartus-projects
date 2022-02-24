@@ -22,8 +22,8 @@ begin
 		if rst = '1' then
 			count <= TO_UNSIGNED(0, 16);
 		-- if enabled
-		elsif enable = '1' then
-			if rising_edge(clk) then
+		elsif rising_edge(clk) then
+			if enable = '1' then
 				-- if max_count = 0 we keep count at 0 and stop
 				if unsigned(max_count) = 0 then
 					count <= TO_UNSIGNED(0, 16);
