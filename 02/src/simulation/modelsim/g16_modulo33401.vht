@@ -26,7 +26,8 @@
 -- 
 
 LIBRARY ieee;                                               
-USE ieee.std_logic_1164.all;                                
+USE ieee.std_logic_1164.all;    
+use IEEE.NUMERIC_STD.ALL;                            
 
 ENTITY g16_modulo33401_vhd_tst IS
 END g16_modulo33401_vhd_tst;
@@ -64,11 +65,10 @@ always : PROCESS
 BEGIN                                                         
 	-- code exec for every event on sensitivity list
 	
-	A <= x"FF000000";
-	wait for 10 ns;
-	A <= x"37000000";
-	wait for 5 ns;
-	A <= x"6c000000";
+	for I in 0 to 255 loop
+		A <= STD_LOGIC_VECTOR(TO_UNSIGNED(I, 8) & TO_UNSIGNED(0, 24));
+		wait for 8 ns;
+	end loop;
 
 WAIT;                                                        
 END PROCESS always;                                          
