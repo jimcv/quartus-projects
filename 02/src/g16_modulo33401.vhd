@@ -3,7 +3,7 @@
 --
 -- Version 1.0
 -- Authors: Jimmy Sheng, Yongde Yu
--- Date: March 9, 2022
+-- Date: March 15, 2022
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -32,6 +32,8 @@ signal Bsum:	unsigned(31 downto 0);
 signal B3:		unsigned(19 downto 0);
 signal Btotal:	unsigned(31 downto 0);
 
+signal Aunsigned:	unsigned(15 downto 0);
+
 begin
 	-- compute floor division
 	A15		<= SHIFT_LEFT("000000000000000" & UNSIGNED(A), 15);
@@ -51,6 +53,7 @@ begin
 	B3			<= SHIFT_LEFT("000" & Afloor, 3);
 	Btotal	<= Bsum - B3;
 	-- subtract
-	Amod33401	<= STD_LOGIC_VECTOR(UNSIGNED(A) - Btotal)(15 downto 0);
+	Aunsigned	<= RESIZE(UNSIGNED(A) - Btotal, 16);
+	Amod33401	<= STD_LOGIC_VECTOR(Aunsigned);
 end arch;
 	
