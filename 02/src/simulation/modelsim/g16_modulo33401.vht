@@ -62,7 +62,14 @@ always : PROCESS
 -- (        )                                                 
 -- variable declarations                                      
 BEGIN                                                         
-        -- code executes for every event on sensitivity list  
+	-- code exec for every event on sensitivity list
+	
+	A <= x"FF000000";
+	wait for 10 ns;
+	A <= x"37000000";
+	wait for 5 ns;
+	A <= x"6c000000";
+
 WAIT;                                                        
 END PROCESS always;                                          
 END g16_modulo33401_arch;
