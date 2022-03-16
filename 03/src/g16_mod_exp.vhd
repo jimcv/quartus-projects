@@ -20,21 +20,45 @@ entity g16_mod_exp is
 			ready			:out	std_logic);
 end g16_mod_exp;
 
-architecture arch of g16_mod_exp is
+architecture mod_exp of g16_mod_exp is
 -- component
 component g16_modulo33401 is
 	Port(	A				:in	std_logic_vector(31 downto 0);
 			Amod33401	:out	std_logic_vector(15 downto 0);
 			Afloor33401	:out	std_logic_vector(16 downto 0));
 end component;
--- signal
+component Counter is
+	Port(	reset		:in		std_logic;
+			start		:in		std_logic;
+			clk		:in		std_logic;
+			target	:in		std_logic_vector(13 downto 0);
+			done		:out		std_logic;
+			count		:inout	std_logic_vector(13 downto 0));
+end component;
+-- signal for modulo block
 signal mod_A:			std_logic_vector(31 downto 0);
 signal mod_Amod:		std_logic_vector(15 downto 0);
+signal mod_Amod_DFF:	std_logic_vector(15 downto 0);
 signal mod_Afloor:	std_logic_vector(16 downto 0);
+-- signal for counter
+signal k:				std_logic_vector(13 downto 0);
+signal c_ready:		std_logic;
 
 begin
-	-- component mapping
+	-- component wiring
 	M1: g16_modulo33401 port map (mod_A, mod_Amod, mod_Afloor);
-
-end arch;
+	mod_A <= STD_LOGIC_VECTOR(RESIZE((UNSIGNED(c) * UNSIGNED(mod_Amod_DFF)), 32));
+	s		<= mod_Amod_DFF;
+	C1: Counter port map (reset, start, clk, d, c_ready, k);
+	ready	<= c_ready;
+	process(k, c_ready)
+	begin
+		if UNSIGNED(k) = 0 then
+			mod_Amod_DFF	<= STD_LOGIC_VECTOR(TO_UNSIGNED(1, 16));
+		-- if enabled
+		elsif c_ready = '0' then
+			mod_Amod_DFF <= mod_Amod;
+		end if;
+	end process;
+end mod_exp;
 
