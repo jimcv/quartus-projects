@@ -63,6 +63,7 @@ simulation/modelsim/*
 !*.sof
 !*.vwf
 ## tbd
+!*.sdc
 
 !*.tcl
 
