@@ -51,13 +51,18 @@ begin
 	s		<= mod_Amod_DFF;
 	C1: Counter port map (reset, start, clk, d, c_ready, k);
 	ready	<= c_ready;
-	process(k, c_ready)
+	process(clk, reset, start, k, c_ready)
 	begin
-		if UNSIGNED(k) = 0 then
+		-- async reset
+		if reset = '1' then
 			mod_Amod_DFF	<= STD_LOGIC_VECTOR(TO_UNSIGNED(1, 16));
 		-- if enabled
-		elsif c_ready = '0' then
-			mod_Amod_DFF <= mod_Amod;
+		elsif start = '1' then
+			if rising_edge(clk) then
+				if (UNSIGNED(k) /= 0) and (c_ready = '0') then
+					mod_Amod_DFF	<= mod_Amod;
+				end if;
+			end if;
 		end if;
 	end process;
 end mod_exp;
