@@ -27,6 +27,7 @@
 
 LIBRARY ieee;                                               
 USE ieee.std_logic_1164.all;                                
+USE IEEE.NUMERIC_STD.ALL;
 
 ENTITY g16_mod_exp_vhd_tst IS
 END g16_mod_exp_vhd_tst;
@@ -63,18 +64,88 @@ BEGIN
 	s => s,
 	start => start
 	);
-init : PROCESS                                               
--- variable declarations                                     
-BEGIN                                                        
-        -- code that executes only once                      
-WAIT;                                                       
-END PROCESS init;                                           
-always : PROCESS                                              
--- optional sensitivity list                                  
--- (        )                                                 
--- variable declarations                                      
-BEGIN                                                         
 	
-WAIT;                                                        
-END PROCESS always;                                          
+	-- clock generation
+	clk_process: process
+	begin
+		clk <= '0';
+		wait for 5 ns;
+		clk <= '1';
+		wait for 5 ns;
+	end process clk_process;
+	
+	-- test process
+	always: process
+	begin
+		reset <= '1';
+		start <= '0';
+		d <= STD_LOGIC_VECTOR(TO_UNSIGNED(5, 14));
+		-- 1. edge case c = 0
+		c <= "0000000000";
+		wait for 10 ns;
+		reset <= '0';
+		start <= '1';
+		wait for 70 ns;
+		reset <= '1';
+		start <= '0';
+		-- 2. edge case c = 2^10 - 1
+		c <= "1111111111";
+		wait for 10 ns;
+		reset <= '0';
+		start <= '1';
+		wait for 70 ns;
+		reset <= '1';
+		start <= '0';
+		-- 3. c = 1
+		c <= STD_LOGIC_VECTOR(TO_UNSIGNED(1, 10));
+		wait for 10 ns;
+		reset <= '0';
+		start <= '1';
+		wait for 70 ns;
+		reset <= '1';
+		start <= '0';
+		-- 4. c = 2
+		c <= STD_LOGIC_VECTOR(TO_UNSIGNED(2, 10));
+		wait for 10 ns;
+		reset <= '0';
+		start <= '1';
+		wait for 70 ns;
+		reset <= '1';
+		start <= '0';
+		-- 5. c = 10
+		c <= STD_LOGIC_VECTOR(TO_UNSIGNED(10, 10));
+		wait for 10 ns;
+		reset <= '0';
+		start <= '1';
+		wait for 70 ns;
+		reset <= '1';
+		start <= '0';
+		-- 6. c = 101
+		c <= STD_LOGIC_VECTOR(TO_UNSIGNED(101, 10));
+		wait for 10 ns;
+		reset <= '0';
+		start <= '1';
+		wait for 70 ns;
+		reset <= '1';
+		start <= '0';
+		-- 7. c = 500
+		c <= STD_LOGIC_VECTOR(TO_UNSIGNED(500, 10));
+		wait for 10 ns;
+		reset <= '0';
+		start <= '1';
+		wait for 70 ns;
+		reset <= '1';
+		start <= '0';
+		-- 8. c = 859
+		c <= STD_LOGIC_VECTOR(TO_UNSIGNED(859, 10));
+		wait for 10 ns;
+		reset <= '0';
+		start <= '1';
+		wait for 70 ns;
+		reset <= '1';
+		start <= '0';
+		
+	wait;
+	end process always;
+		
 END g16_mod_exp_arch;
