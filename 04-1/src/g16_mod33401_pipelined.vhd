@@ -18,6 +18,7 @@ end g16_mod33401_pipelined;
 
 architecture arch of g16_mod33401_pipelined is
 -- stage signals
+signal S0:		unsigned(31 downto 0);
 signal S1_1:	unsigned(31 downto 0);
 signal S1_2:	unsigned(32 downto 0);
 signal S2_1:	unsigned(32 downto 0);
@@ -73,13 +74,65 @@ begin
 	begin
 		-- async reset
 		if reset = '1' then
-			
+			S0		<= TO_UNSIGNED(0, 32);
+			S1_1	<= TO_UNSIGNED(0, 32);
+			S1_2	<= TO_UNSIGNED(0, 33);
+			S2_1	<= TO_UNSIGNED(0, 33);
+			S2_2	<= TO_UNSIGNED(0, 33);
+			S3_1	<= TO_UNSIGNED(0, 33);
+			S3_2	<= TO_UNSIGNED(0, 36);
+			S4_1	<= TO_UNSIGNED(0, 36);
+			S4_2	<= TO_UNSIGNED(0, 36);
+			S5_1	<= TO_UNSIGNED(0, 36);
+			S5_2	<= TO_UNSIGNED(0, 47);
+			S6_1	<= TO_UNSIGNED(0, 47);
+			S6_2	<= TO_UNSIGNED(0, 47);
+			S7_1	<= TO_UNSIGNED(0, 47);
+			S7_2	<= TO_UNSIGNED(0, 41);
+			S8_1	<= TO_UNSIGNED(0, 41);
+			S8_2	<= TO_UNSIGNED(0, 47);
+			S9_1	<= TO_UNSIGNED(0, 47);
+			S9_2	<= TO_UNSIGNED(0, 39);
+			S10_1	<= TO_UNSIGNED(0, 32);
+			S10_2	<= TO_UNSIGNED(0, 47);
+			S11_1	<= TO_UNSIGNED(0, 32);
+			S11_2	<= TO_UNSIGNED(0, 17);
+			S12_1	<= TO_UNSIGNED(0, 32);
+			S12_2	<= TO_UNSIGNED(0, 17);
+			S12_3	<= TO_UNSIGNED(0, 24);
+			S13_1	<= TO_UNSIGNED(0, 32);
+			S13_2	<= TO_UNSIGNED(0, 17);
+			S13_3	<= TO_UNSIGNED(0, 24);
+			S14_1	<= TO_UNSIGNED(0, 32);
+			S14_2	<= TO_UNSIGNED(0, 17);
+			S14_3	<= TO_UNSIGNED(0, 24);
+			S14_4	<= TO_UNSIGNED(0, 26);
+			S15_1	<= TO_UNSIGNED(0, 32);
+			S15_2	<= TO_UNSIGNED(0, 17);
+			S15_3	<= TO_UNSIGNED(0, 26);
+			S16_1	<= TO_UNSIGNED(0, 32);
+			S16_2	<= TO_UNSIGNED(0, 17);
+			S16_3	<= TO_UNSIGNED(0, 26);
+			S16_4	<= TO_UNSIGNED(0, 32);
+			S17_1	<= TO_UNSIGNED(0, 32);
+			S17_2	<= TO_UNSIGNED(0, 17);
+			S17_3	<= TO_UNSIGNED(0, 32);
+			S18_1	<= TO_UNSIGNED(0, 32);
+			S18_2	<= TO_UNSIGNED(0, 17);
+			S18_3	<= TO_UNSIGNED(0, 32);
+			S18_4	<= TO_UNSIGNED(0, 20);
+			S19_1	<= TO_UNSIGNED(0, 32);
+			S19_2	<= TO_UNSIGNED(0, 17);
+			S19_3	<= TO_UNSIGNED(0, 32);
+			Amod33401	<= STD_LOGIC_VECTOR(TO_UNSIGNED(1, 16));
+			Afloor33401	<=	STD_LOGIC_VECTOR(TO_UNSIGNED(0, 17));
 		elsif enable = '1' then
 			if rising_edge(clk) then
-				-- compute floor
+				-- stage 0
+				S0		<= UNSIGNED(A);
 				-- stage 1 (shift, A1)
-				S1_1	<= UNSIGNED(A);
-				S1_2	<= SHIFT_LEFT("0" & UNSIGNED(A), 1);
+				S1_1	<= S0;
+				S1_2	<= SHIFT_LEFT("0" & S0, 1);
 				-- stage 2 (add)
 				S2_1	<= S1_2;
 				S2_2	<= S1_1 + S1_2;
@@ -105,7 +158,7 @@ begin
 				S9_1	<= S8_2;
 				S9_2	<= RESIZE(SHIFT_RIGHT(S8_1, 2), 39);
 				-- stage 10 (sub, Atotal, keep A)
-				S10_1	<= RESIZE(SHIFT_RIGHT(S9_1, 7), 32);
+				S10_1	<= RESIZE(SHIFT_RIGHT(S9_2, 7), 32);
 				S10_2	<= S9_1 - S9_2;
 				-- stage 11 (A, Afloor33401)
 				S11_1	<= S10_1;
