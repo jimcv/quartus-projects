@@ -9,24 +9,24 @@ entity Counter is
 			clk		:in		std_logic;
 			target	:in		std_logic_vector(13 downto 0);
 			done		:out		std_logic;
-			count		:inout	std_logic_vector(14 downto 0));
+			count		:inout	std_logic_vector(18 downto 0));
 end Counter;
 
 architecture count of Counter is
 -- wait for pipeline to finish
-signal pipetarget:		unsigned(14 downto 0);
+signal pipetarget:		unsigned(18 downto 0);
 begin
-	pipetarget	<= RESIZE(UNSIGNED(target), 15) + 20;
+	pipetarget	<= RESIZE(UNSIGNED(target) * 21, 19);
 	process(clk, reset, start)
 	begin
 		-- async reset
 		if reset = '1' then
-			count		<= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 15));
+			count		<= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 19));
 			done		<= '0';
 		-- if enabled
 		elsif start = '1' then
 			if rising_edge(clk) then
-				if UNSIGNED(count) = pipetarget then
+				if (UNSIGNED(count) + 1) >= pipetarget then
 					done	<= '1';
 				else
 					count <= STD_LOGIC_VECTOR(UNSIGNED(count) + 1);

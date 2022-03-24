@@ -36,7 +36,7 @@ component Counter is
 			clk		:in		std_logic;
 			target	:in		std_logic_vector(13 downto 0);
 			done		:out		std_logic;
-			count		:inout	std_logic_vector(14 downto 0));
+			count		:inout	std_logic_vector(18 downto 0));
 end component;
 -- signal for modulo block
 signal mod_A:			std_logic_vector(31 downto 0);
@@ -44,7 +44,7 @@ signal mod_enable:	std_logic;
 signal mod_Amod:		std_logic_vector(15 downto 0);
 signal mod_Afloor:	std_logic_vector(16 downto 0);
 -- signal for counter
-signal k:				std_logic_vector(14 downto 0);
+signal k:				std_logic_vector(18 downto 0);
 signal c_ready:		std_logic;
 
 begin
