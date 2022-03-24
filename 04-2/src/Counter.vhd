@@ -21,13 +21,15 @@ begin
 	begin
 		-- async reset
 		if reset = '1' then
-			count		<= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 19));
+			count		<= STD_LOGIC_VECTOR(TO_UNSIGNED(1, 19));
 			done		<= '0';
 		-- if enabled
-		elsif start = '1' then
-			if rising_edge(clk) then
-				if (UNSIGNED(count) + 1) >= pipetarget then
-					done	<= '1';
+		elsif rising_edge(clk) then
+			if start = '1' then
+				if pipetarget = 0 then
+					done <= '1';
+				elsif UNSIGNED(count) = pipetarget then
+					done <= '1';
 				else
 					count <= STD_LOGIC_VECTOR(UNSIGNED(count) + 1);
 					done	<= '0';
