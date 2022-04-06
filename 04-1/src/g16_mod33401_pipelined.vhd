@@ -63,7 +63,42 @@ begin
 	begin
 		-- async reset
 		if reset = '1' then
-			S0		<= TO_UNSIGNED(0, 32);
+			S0			<= TO_UNSIGNED(0, 32);
+			S1_A		<= TO_UNSIGNED(0, 32);
+			S1_A1		<= TO_UNSIGNED(0, 33);
+			S1_A4		<= TO_UNSIGNED(0, 36);
+			S1_A15	<= TO_UNSIGNED(0, 47);
+			S1_A9		<= TO_UNSIGNED(0, 41);
+			S1_A7		<= TO_UNSIGNED(0, 39);
+			S2_A		<= TO_UNSIGNED(0, 32);
+			S2_A15A4	<= TO_UNSIGNED(0, 47);
+			S2_A1A	<= TO_UNSIGNED(0, 34);
+			S2_A9A7	<= TO_UNSIGNED(0, 42);
+			S3_A		<= TO_UNSIGNED(0, 32);
+			S3_Asum	<= TO_UNSIGNED(0, 47);
+			S3_A9A7	<= TO_UNSIGNED(0, 42);
+			S4_A		<= TO_UNSIGNED(0, 32);
+			S4_Atot	<= TO_UNSIGNED(0, 47);
+			S5_A		<= TO_UNSIGNED(0, 32);
+			S5_Aflo	<= TO_UNSIGNED(0, 17);
+			S6_A		<= TO_UNSIGNED(0, 32);
+			S6_Aflo	<= TO_UNSIGNED(0, 17);
+			S6_B7		<= TO_UNSIGNED(0, 24);
+			S6_B9		<= TO_UNSIGNED(0, 26);
+			S6_B15	<= TO_UNSIGNED(0, 32);
+			S6_B3		<= TO_UNSIGNED(0, 20);
+			S7_A		<= TO_UNSIGNED(0, 32);
+			S7_Aflo	<= TO_UNSIGNED(0, 17);
+			S7_B15B9	<= TO_UNSIGNED(0, 32);
+			S7_B7Aflo	<= TO_UNSIGNED(0, 25);
+			S7_B3		<= TO_UNSIGNED(0, 20);
+			S8_A		<= TO_UNSIGNED(0, 32);
+			S8_Aflo	<= TO_UNSIGNED(0, 17);
+			S8_Bsum	<= TO_UNSIGNED(0, 32);
+			S8_B3		<= TO_UNSIGNED(0, 20);
+			S9_A		<= TO_UNSIGNED(0, 32);
+			S9_Aflo	<= TO_UNSIGNED(0, 17);
+			S9_Btot	<= TO_UNSIGNED(0, 32);
 			-- TODO
 			Amod33401	<= STD_LOGIC_VECTOR(TO_UNSIGNED(1, 16));
 			Afloor33401	<=	STD_LOGIC_VECTOR(TO_UNSIGNED(0, 17));
