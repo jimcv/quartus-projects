@@ -19,6 +19,44 @@ end g16_mod33401_pipelined;
 architecture arch of g16_mod33401_pipelined is
 -- stage signals
 signal S0:		unsigned(31 downto 0);
+signal S1_A:	unsigned(31 downto 0);
+signal S1_A1:	unsigned(32 downto 0);
+signal S1_A4:	unsigned(35 downto 0);
+signal S1_A15:	unsigned(46 downto 0);
+signal S1_A9:	unsigned(40 downto 0);
+signal S1_A7:	unsigned(38 downto 0);
+signal S2_A:	unsigned(31 downto 0);
+signal S2_A15A4:	unsigned(46 downto 0);
+-- 1 bit overflow
+signal S2_A1A:		unsigned(33 downto 0);
+-- 1 bit overflow
+signal S2_A9A7:	unsigned(41 downto 0);
+signal S3_A:		unsigned(31 downto 0);
+signal S3_Asum:	unsigned(46 downto 0);
+signal S3_A9A7:	unsigned(41 downto 0);
+signal S4_A:		unsigned(31 downto 0);
+signal S4_Atot:	unsigned(46 downto 0);
+signal S5_A:		unsigned(31 downto 0);
+signal S5_Aflo:	unsigned(16 downto 0);
+signal S6_A:		unsigned(31 downto 0);
+signal S6_Aflo:	unsigned(16 downto 0);
+signal S6_B7:		unsigned(23 downto 0);
+signal S6_B9:		unsigned(25 downto 0);
+signal S6_B15:		unsigned(31 downto 0);
+signal S6_B3:		unsigned(19 downto 0);
+signal S7_A:		unsigned(31 downto 0);
+signal S7_Aflo:	unsigned(16 downto 0);
+signal S7_B15B9:	unsigned(31 downto 0);
+-- 1 bit overflow
+signal S7_B7Aflo:	unsigned(24 downto 0);
+signal S7_B3:		unsigned(19 downto 0);
+signal S8_A:		unsigned(31 downto 0);
+signal S8_Aflo:	unsigned(16 downto 0);
+signal S8_Bsum:	unsigned(31 downto 0);
+signal S8_B3:		unsigned(19 downto 0);
+signal S9_A:		unsigned(31 downto 0);
+signal S9_Aflo:	unsigned(16 downto 0);
+signal S9_Btot:	unsigned(31 downto 0);
 
 begin
 	process(clk, reset, enable, A)
