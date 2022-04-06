@@ -85,7 +85,7 @@ BEGIN
 		wait for 10 ns;
 		reset <= '0';
 		start <= '1';
-		wait for 70 ns;
+		wait for 300 ns;
 		reset <= '1';
 		start <= '0';
 		-- 2. edge case c = 2^10 - 1
@@ -93,7 +93,7 @@ BEGIN
 		wait for 10 ns;
 		reset <= '0';
 		start <= '1';
-		wait for 70 ns;
+		wait for 300 ns;
 		reset <= '1';
 		start <= '0';
 		-- 3. c = 1
@@ -101,7 +101,7 @@ BEGIN
 		wait for 10 ns;
 		reset <= '0';
 		start <= '1';
-		wait for 70 ns;
+		wait for 300 ns;
 		reset <= '1';
 		start <= '0';
 		-- 4. c = 2
@@ -109,7 +109,7 @@ BEGIN
 		wait for 10 ns;
 		reset <= '0';
 		start <= '1';
-		wait for 70 ns;
+		wait for 300 ns;
 		reset <= '1';
 		start <= '0';
 		-- 5. c = 10
@@ -117,7 +117,7 @@ BEGIN
 		wait for 10 ns;
 		reset <= '0';
 		start <= '1';
-		wait for 70 ns;
+		wait for 300 ns;
 		reset <= '1';
 		start <= '0';
 		-- 6. c = 101
@@ -125,7 +125,7 @@ BEGIN
 		wait for 10 ns;
 		reset <= '0';
 		start <= '1';
-		wait for 70 ns;
+		wait for 300 ns;
 		reset <= '1';
 		start <= '0';
 		-- 7. c = 500
@@ -133,7 +133,7 @@ BEGIN
 		wait for 10 ns;
 		reset <= '0';
 		start <= '1';
-		wait for 70 ns;
+		wait for 300 ns;
 		reset <= '1';
 		start <= '0';
 		-- 8. c = 859
@@ -141,7 +141,7 @@ BEGIN
 		wait for 10 ns;
 		reset <= '0';
 		start <= '1';
-		wait for 70 ns;
+		wait for 300 ns;
 		reset <= '1';
 		start <= '0';
 		
