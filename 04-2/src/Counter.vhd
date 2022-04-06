@@ -9,19 +9,19 @@ entity Counter is
 			clk		:in		std_logic;
 			target	:in		std_logic_vector(13 downto 0);
 			done		:out		std_logic;
-			count		:inout	std_logic_vector(18 downto 0));
+			count		:inout	std_logic_vector(17 downto 0));
 end Counter;
 
 architecture count of Counter is
 -- wait for pipeline to finish
-signal pipetarget:		unsigned(18 downto 0);
+signal pipetarget:		unsigned(17 downto 0);
 begin
-	pipetarget	<= RESIZE(UNSIGNED(target) * 21, 19);
+	pipetarget	<= RESIZE(UNSIGNED(target) * 11, 18);
 	process(clk, reset, start)
 	begin
 		-- async reset
 		if reset = '1' then
-			count		<= STD_LOGIC_VECTOR(TO_UNSIGNED(1, 19));
+			count		<= STD_LOGIC_VECTOR(TO_UNSIGNED(1, 18));
 			done		<= '0';
 		-- if enabled
 		elsif rising_edge(clk) then

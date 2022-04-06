@@ -19,189 +19,141 @@ end g16_mod33401_pipelined;
 architecture arch of g16_mod33401_pipelined is
 -- stage signals
 signal S0:		unsigned(31 downto 0);
-signal S1_1:	unsigned(31 downto 0);
-signal S1_2:	unsigned(32 downto 0);
-signal S2_1:	unsigned(32 downto 0);
-signal S2_2:	unsigned(32 downto 0);
-signal S3_1:	unsigned(32 downto 0);
-signal S3_2:	unsigned(35 downto 0);
-signal S4_1:	unsigned(35 downto 0);
-signal S4_2:	unsigned(35 downto 0);
-signal S5_1:	unsigned(35 downto 0);
-signal S5_2:	unsigned(46 downto 0);
-signal S6_1:	unsigned(46 downto 0);
-signal S6_2:	unsigned(46 downto 0);
-signal S7_1:	unsigned(46 downto 0);
-signal S7_2:	unsigned(40 downto 0);
-signal S8_1:	unsigned(40 downto 0);
-signal S8_2:	unsigned(46 downto 0);
-signal S9_1:	unsigned(46 downto 0);
-signal S9_2:	unsigned(38 downto 0);
-signal S10_1:	unsigned(31 downto 0);
-signal S10_2:	unsigned(46 downto 0);
-signal S11_1:	unsigned(31 downto 0);
-signal S11_2:	unsigned(16 downto 0);
-signal S12_1: 	unsigned(31 downto 0);
-signal S12_2:	unsigned(16 downto 0);
-signal S12_3:	unsigned(23 downto 0);
-signal S13_1: 	unsigned(31 downto 0);
-signal S13_2:	unsigned(16 downto 0);
-signal S13_3:	unsigned(23 downto 0);
-signal S14_1: 	unsigned(31 downto 0);
-signal S14_2:	unsigned(16 downto 0);
-signal S14_3:	unsigned(23 downto 0);
-signal S14_4:	unsigned(25 downto 0);
-signal S15_1: 	unsigned(31 downto 0);
-signal S15_2:	unsigned(16 downto 0);
-signal S15_3:	unsigned(25 downto 0);
-signal S16_1: 	unsigned(31 downto 0);
-signal S16_2:	unsigned(16 downto 0);
-signal S16_3:	unsigned(25 downto 0);
-signal S16_4:	unsigned(31 downto 0);
-signal S17_1: 	unsigned(31 downto 0);
-signal S17_2:	unsigned(16 downto 0);
-signal S17_3:	unsigned(31 downto 0);
-signal S18_1: 	unsigned(31 downto 0);
-signal S18_2:	unsigned(16 downto 0);
-signal S18_3:	unsigned(31 downto 0);
-signal S18_4:	unsigned(19 downto 0);
-signal S19_1: 	unsigned(31 downto 0);
-signal S19_2:	unsigned(16 downto 0);
-signal S19_3:	unsigned(31 downto 0);
+signal S1_A:	unsigned(31 downto 0);
+signal S1_A1:	unsigned(32 downto 0);
+signal S1_A4:	unsigned(35 downto 0);
+signal S1_A15:	unsigned(46 downto 0);
+signal S1_A9:	unsigned(40 downto 0);
+signal S1_A7:	unsigned(38 downto 0);
+signal S2_A:	unsigned(31 downto 0);
+signal S2_A15A4:	unsigned(46 downto 0);
+-- 1 bit overflow
+signal S2_A1A:		unsigned(33 downto 0);
+-- 1 bit overflow
+signal S2_A9A7:	unsigned(41 downto 0);
+signal S3_A:		unsigned(31 downto 0);
+signal S3_Asum:	unsigned(46 downto 0);
+signal S3_A9A7:	unsigned(41 downto 0);
+signal S4_A:		unsigned(31 downto 0);
+signal S4_Atot:	unsigned(46 downto 0);
+signal S5_A:		unsigned(31 downto 0);
+signal S5_Aflo:	unsigned(16 downto 0);
+signal S6_A:		unsigned(31 downto 0);
+signal S6_Aflo:	unsigned(16 downto 0);
+signal S6_B7:		unsigned(23 downto 0);
+signal S6_B9:		unsigned(25 downto 0);
+signal S6_B15:		unsigned(31 downto 0);
+signal S6_B3:		unsigned(19 downto 0);
+signal S7_A:		unsigned(31 downto 0);
+signal S7_Aflo:	unsigned(16 downto 0);
+signal S7_B15B9:	unsigned(31 downto 0);
+-- 1 bit overflow
+signal S7_B7Aflo:	unsigned(24 downto 0);
+signal S7_B3:		unsigned(19 downto 0);
+signal S8_A:		unsigned(31 downto 0);
+signal S8_Aflo:	unsigned(16 downto 0);
+signal S8_Bsum:	unsigned(31 downto 0);
+signal S8_B3:		unsigned(19 downto 0);
+signal S9_A:		unsigned(31 downto 0);
+signal S9_Aflo:	unsigned(16 downto 0);
+signal S9_Btot:	unsigned(31 downto 0);
 
 begin
 	process(clk, reset, enable, A)
 	begin
 		-- async reset
 		if reset = '1' then
-			S0		<= TO_UNSIGNED(0, 32);
-			S1_1	<= TO_UNSIGNED(0, 32);
-			S1_2	<= TO_UNSIGNED(0, 33);
-			S2_1	<= TO_UNSIGNED(0, 33);
-			S2_2	<= TO_UNSIGNED(0, 33);
-			S3_1	<= TO_UNSIGNED(0, 33);
-			S3_2	<= TO_UNSIGNED(0, 36);
-			S4_1	<= TO_UNSIGNED(0, 36);
-			S4_2	<= TO_UNSIGNED(0, 36);
-			S5_1	<= TO_UNSIGNED(0, 36);
-			S5_2	<= TO_UNSIGNED(0, 47);
-			S6_1	<= TO_UNSIGNED(0, 47);
-			S6_2	<= TO_UNSIGNED(0, 47);
-			S7_1	<= TO_UNSIGNED(0, 47);
-			S7_2	<= TO_UNSIGNED(0, 41);
-			S8_1	<= TO_UNSIGNED(0, 41);
-			S8_2	<= TO_UNSIGNED(0, 47);
-			S9_1	<= TO_UNSIGNED(0, 47);
-			S9_2	<= TO_UNSIGNED(0, 39);
-			S10_1	<= TO_UNSIGNED(0, 32);
-			S10_2	<= TO_UNSIGNED(0, 47);
-			S11_1	<= TO_UNSIGNED(0, 32);
-			S11_2	<= TO_UNSIGNED(0, 17);
-			S12_1	<= TO_UNSIGNED(0, 32);
-			S12_2	<= TO_UNSIGNED(0, 17);
-			S12_3	<= TO_UNSIGNED(0, 24);
-			S13_1	<= TO_UNSIGNED(0, 32);
-			S13_2	<= TO_UNSIGNED(0, 17);
-			S13_3	<= TO_UNSIGNED(0, 24);
-			S14_1	<= TO_UNSIGNED(0, 32);
-			S14_2	<= TO_UNSIGNED(0, 17);
-			S14_3	<= TO_UNSIGNED(0, 24);
-			S14_4	<= TO_UNSIGNED(0, 26);
-			S15_1	<= TO_UNSIGNED(0, 32);
-			S15_2	<= TO_UNSIGNED(0, 17);
-			S15_3	<= TO_UNSIGNED(0, 26);
-			S16_1	<= TO_UNSIGNED(0, 32);
-			S16_2	<= TO_UNSIGNED(0, 17);
-			S16_3	<= TO_UNSIGNED(0, 26);
-			S16_4	<= TO_UNSIGNED(0, 32);
-			S17_1	<= TO_UNSIGNED(0, 32);
-			S17_2	<= TO_UNSIGNED(0, 17);
-			S17_3	<= TO_UNSIGNED(0, 32);
-			S18_1	<= TO_UNSIGNED(0, 32);
-			S18_2	<= TO_UNSIGNED(0, 17);
-			S18_3	<= TO_UNSIGNED(0, 32);
-			S18_4	<= TO_UNSIGNED(0, 20);
-			S19_1	<= TO_UNSIGNED(1, 32);
-			S19_2	<= TO_UNSIGNED(0, 17);
-			S19_3	<= TO_UNSIGNED(0, 32);
+			S0			<= TO_UNSIGNED(0, 32);
+			S1_A		<= TO_UNSIGNED(0, 32);
+			S1_A1		<= TO_UNSIGNED(0, 33);
+			S1_A4		<= TO_UNSIGNED(0, 36);
+			S1_A15	<= TO_UNSIGNED(0, 47);
+			S1_A9		<= TO_UNSIGNED(0, 41);
+			S1_A7		<= TO_UNSIGNED(0, 39);
+			S2_A		<= TO_UNSIGNED(0, 32);
+			S2_A15A4	<= TO_UNSIGNED(0, 47);
+			S2_A1A	<= TO_UNSIGNED(0, 34);
+			S2_A9A7	<= TO_UNSIGNED(0, 42);
+			S3_A		<= TO_UNSIGNED(0, 32);
+			S3_Asum	<= TO_UNSIGNED(0, 47);
+			S3_A9A7	<= TO_UNSIGNED(0, 42);
+			S4_A		<= TO_UNSIGNED(0, 32);
+			S4_Atot	<= TO_UNSIGNED(0, 47);
+			S5_A		<= TO_UNSIGNED(0, 32);
+			S5_Aflo	<= TO_UNSIGNED(0, 17);
+			S6_A		<= TO_UNSIGNED(0, 32);
+			S6_Aflo	<= TO_UNSIGNED(0, 17);
+			S6_B7		<= TO_UNSIGNED(0, 24);
+			S6_B9		<= TO_UNSIGNED(0, 26);
+			S6_B15	<= TO_UNSIGNED(0, 32);
+			S6_B3		<= TO_UNSIGNED(0, 20);
+			S7_A		<= TO_UNSIGNED(0, 32);
+			S7_Aflo	<= TO_UNSIGNED(0, 17);
+			S7_B15B9	<= TO_UNSIGNED(0, 32);
+			S7_B7Aflo	<= TO_UNSIGNED(0, 25);
+			S7_B3		<= TO_UNSIGNED(0, 20);
+			S8_A		<= TO_UNSIGNED(0, 32);
+			S8_Aflo	<= TO_UNSIGNED(0, 17);
+			S8_Bsum	<= TO_UNSIGNED(0, 32);
+			S8_B3		<= TO_UNSIGNED(0, 20);
+			S9_A		<= TO_UNSIGNED(0, 32);
+			S9_Aflo	<= TO_UNSIGNED(0, 17);
+			S9_Btot	<= TO_UNSIGNED(0, 32);
+			-- TODO
 			Amod33401	<= STD_LOGIC_VECTOR(TO_UNSIGNED(1, 16));
 			Afloor33401	<=	STD_LOGIC_VECTOR(TO_UNSIGNED(0, 17));
 		elsif enable = '1' then
 			if rising_edge(clk) then
 				-- stage 0
 				S0		<= UNSIGNED(A);
-				-- stage 1 (shift, A1)
-				S1_1	<= S0;
-				S1_2	<= SHIFT_LEFT("0" & S0, 1);
-				-- stage 2 (add)
-				S2_1	<= S1_2;
-				S2_2	<= S1_1 + S1_2;
-				-- stage 3 (shift, A4)
-				S3_1	<= S2_2;
-				S3_2	<= SHIFT_LEFT("000" & S2_1, 3);
-				-- stage 4 (add)
-				S4_1	<= S3_2;
-				S4_2	<= S3_1 + S3_2;
-				-- stage 5 (shift, A15)
-				S5_1	<= S4_2;
-				S5_2	<= SHIFT_LEFT("00000000000" & S4_1, 11);
-				-- stage 6 (add, Asum)
-				S6_1	<= S5_2;
-				S6_2	<= S5_1 + S5_2;
-				-- stage 7 (shift, A9)
-				S7_1	<= S6_2;
-				S7_2	<= RESIZE(SHIFT_RIGHT(S6_1, 6), 41);
-				-- stage 8 (sub)
-				S8_1	<= S7_2;
-				S8_2	<= S7_1 - S7_2;
-				-- stage 9 (shift, A7)
-				S9_1	<= S8_2;
-				S9_2	<= RESIZE(SHIFT_RIGHT(S8_1, 2), 39);
-				-- stage 10 (sub, Atotal, keep A)
-				S10_1	<= RESIZE(SHIFT_RIGHT(S9_2, 7), 32);
-				S10_2	<= S9_1 - S9_2;
-				-- stage 11 (A, Afloor33401)
-				S11_1	<= S10_1;
-				S11_2	<= RESIZE(SHIFT_RIGHT(S10_2, 30), 17);
-				-- compute product
-				-- stage 12 (shift, B7)
-				S12_1	<= S11_1;
-				S12_2	<= S11_2;
-				S12_3	<= SHIFT_LEFT("0000000" & S11_2, 7);
-				-- stage 13 (add)
-				S13_1	<= S12_1;
-				S13_2	<= S12_2;
-				S13_3	<= S12_2 + S12_3;
-				-- stage 14 (shift, B9)
-				S14_1	<= S13_1;
-				S14_2	<= S13_2;
-				S14_3	<= S13_3;
-				S14_4	<=	SHIFT_LEFT("000000000" & S13_2, 9);
-				-- stage 15 (add)
-				S15_1	<= S14_1;
-				S15_2	<= S14_2;
-				S15_3	<= S14_3 + S14_4;
-				-- stage 16 (shift, B15)
-				S16_1	<= S15_1;
-				S16_2	<= S15_2;
-				S16_3	<= S15_3;
-				S16_4	<= SHIFT_LEFT("000000000000000" & S15_2, 15);
-				-- stage 17 (add)
-				S17_1	<= S16_1;
-				S17_2	<= S16_2;
-				S17_3	<= S16_3 + S16_4;
-				-- stage 18 (shift, B3)
-				S18_1	<= S17_1;
-				S18_2	<= S17_2;
-				S18_3	<= S17_3;
-				S18_4	<= SHIFT_LEFT("000" & S17_2, 3);
-				-- stage 19 (sub, Btotal)
-				S19_1	<= S18_1;
-				S19_2	<= S18_2;
-				S19_3	<= S18_3 - S18_4;
-				-- stage 20 (sub)
-				Amod33401	<= STD_LOGIC_VECTOR(RESIZE(S19_1 - S19_3, 16));
-				Afloor33401	<=	STD_LOGIC_VECTOR(S19_2);
+				-- stage 1 (shifting)
+				S1_A		<= S0;
+				S1_A1		<= SHIFT_LEFT("0" & S0, 1);
+				S1_A4		<= SHIFT_LEFT("0000" & S0, 4);
+				S1_A15	<= SHIFT_LEFT("000000000000000" & S0, 15);
+				S1_A9		<= SHIFT_LEFT("000000000" & S0, 9);
+				S1_A7		<= SHIFT_LEFT("0000000" & S0, 7);
+				-- stage 2 (partial sums)
+				S2_A		<= S1_A;
+				S2_A15A4	<= S1_A15 + S1_A4;
+				S2_A1A	<= ("0" & S1_A1) + S1_A;
+				-- A9A7 needs an extra bit for overflow
+				S2_A9A7	<= ("0" & S1_A9) + S1_A7;
+				-- stage 3 (partial sums)
+				S3_A		<= S2_A;
+				S3_Asum	<= S2_A15A4 + S2_A1A;
+				S3_A9A7	<= S2_A9A7;
+				-- stage 4 (obtain Atotal)
+				S4_A		<= S3_A;
+				S4_Atot	<= S3_Asum - S3_A9A7;
+				-- stage 5 (truncate Atotal to obtain Afloor)
+				S5_A		<= S4_A;
+				S5_Aflo	<= RESIZE(SHIFT_RIGHT(S4_Atot, 30), 17);
+				-- stage 6 (shifting)
+				S6_A		<= S5_A;
+				S6_Aflo	<= S5_Aflo;
+				S6_B7		<= SHIFT_LEFT("0000000" & S5_Aflo, 7);
+				S6_B9		<= SHIFT_LEFT("000000000" & S5_Aflo, 9);
+				S6_B15	<= SHIFT_LEFT("000000000000000" & S5_Aflo, 15);
+				S6_B3		<= SHIFT_LEFT("000" & S5_Aflo, 3);
+				-- stage 7 (partial sums)
+				S7_A		<= S6_A;
+				S7_Aflo	<= S6_Aflo;
+				S7_B15B9	<= S6_B15 + S6_B9;
+				S7_B7Aflo	<= ("0" & S6_B7) + S6_Aflo;
+				S7_B3		<= S6_B3;
+				-- stage 8 (partial sums)
+				S8_A		<= S7_A;
+				S8_Aflo	<= S7_Aflo;
+				S8_Bsum	<= S7_B15B9 + S7_B7Aflo;
+				S8_B3		<= S7_B3;
+				-- stage 9 (obtain Btotal)
+				S9_A		<= S8_A;
+				S9_Aflo	<= S8_Aflo;
+				S9_Btot	<= S8_Bsum - S8_B3;
+				-- stage 10 (outputs)
+				Amod33401	<= STD_LOGIC_VECTOR(RESIZE(S9_A - S9_Btot, 16));
+				Afloor33401	<=	STD_LOGIC_VECTOR(S9_Aflo);
 			end if;
 		end if;
 	end process;
