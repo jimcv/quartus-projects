@@ -116,9 +116,9 @@ begin
 				-- stage 2 (partial sums)
 				S2_A		<= S1_A;
 				S2_A15A4	<= S1_A15 + S1_A4;
-				S2_A1A	<= S1_A1 + S1_A;
+				S2_A1A	<= ("0" & S1_A1) + S1_A;
 				-- A9A7 needs an extra bit for overflow
-				S2_A9A7	<= S1_A9 + S1_A7;
+				S2_A9A7	<= ("0" & S1_A9) + S1_A7;
 				-- stage 3 (partial sums)
 				S3_A		<= S2_A;
 				S3_Asum	<= S2_A15A4 + S2_A1A;
@@ -140,7 +140,7 @@ begin
 				S7_A		<= S6_A;
 				S7_Aflo	<= S6_Aflo;
 				S7_B15B9	<= S6_B15 + S6_B9;
-				S7_B7Aflo	<= S6_B7 + S6_Aflo;
+				S7_B7Aflo	<= ("0" & S6_B7) + S6_Aflo;
 				S7_B3		<= S6_B3;
 				-- stage 8 (partial sums)
 				S8_A		<= S7_A;
