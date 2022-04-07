@@ -15,15 +15,24 @@ end g16_HASH10;
 
 architecture arch of g16_HASH10 is
 
+signal oldHash:		unsigned(31 downto 0);
+signal hash32:			unsigned(31 downto 0);
+
 begin
-	process(clk, reset, enable, A)
+	process(clk, rst, enable, message)
 	begin
 		-- async reset
+		if rst = '1' then
+			oldHash			<= TO_UNSIGNED(5381, 32);
+			hash32			<= TO_UNSIGNED(0, 32);
 		elsif enable = '1' then
 			if rising_edge(clk) then
-			
+				hash32	<= SHIFT_LEFT(oldHash, 5) + oldHash + UNSIGNED(message);
+				oldHash	<= hash32;
 			end if;
 		end if;
 	end process;
+	
+	hash10	<= STD_LOGIC_VECTOR(hash32(31 downto 22) XOR hash32(9 downto 0));
 	
 end arch;
