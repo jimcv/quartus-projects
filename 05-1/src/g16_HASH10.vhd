@@ -10,7 +10,7 @@ use IEEE.NUMERIC_STD.ALL;
 entity g16_HASH10 is
 	Port(	clk, rst, enable			:in	std_logic;
 			message						:in	std_logic_vector(31 downto 0);
-			hash10						:out	std_logic_vector(9 downto 0);
+			hash10						:out	std_logic_vector(9 downto 0));
 end g16_HASH10;
 
 architecture arch of g16_HASH10 is
