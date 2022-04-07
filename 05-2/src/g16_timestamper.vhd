@@ -31,8 +31,11 @@ component g16_mod_exp is
 			s				:out	std_logic_vector(15 downto 0);
 			ready			:out	std_logic);
 end component;
+-- signals
+
 
 begin
+
 	
 end arch;
 
