@@ -1,3 +1,4 @@
+-- this circuit implements a simple 10 bit Hash function
 --
 -- entity name: g16_HASH10
 --
