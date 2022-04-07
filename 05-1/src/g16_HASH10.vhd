@@ -28,7 +28,7 @@ begin
 		elsif enable = '1' then
 			if rising_edge(clk) then
 				hash32	<= SHIFT_LEFT(oldHash, 5) + oldHash + UNSIGNED(message);
-				oldHash	<= hash32;
+				oldHash	<= SHIFT_LEFT(oldHash, 5) + oldHash + UNSIGNED(message);
 			end if;
 		end if;
 	end process;
