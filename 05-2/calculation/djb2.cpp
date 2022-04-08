@@ -24,6 +24,16 @@ unsigned int hash10(unsigned int hash32)
   return hash10;
 }
 
+unsigned int modExp(unsigned int c, unsigned int d, unsigned int n)
+{
+  unsigned int s = 1;
+  for (unsigned int k = 0; k < d; k++)
+  {
+    s = (c * s) % n;
+  }
+  return s;
+}
+
 int main()
 {
   unsigned int hash1_32 = hash(123, 5381);
@@ -35,6 +45,9 @@ int main()
   unsigned int hash2_10 = hash10(hash2_32);
   cout << "Hash32: " << hash2_32 << "; " << hex << hash2_32 << dec << endl;
   cout << "Hash10: " << hash2_10 << "; " << hex << hash2_10 << dec << endl;
+  cout << endl;
+  unsigned int mod_exp_1 = modExp(901, 5, 33401);
+  cout << "Signature: " << mod_exp_1;
   return 0;
 }
 
