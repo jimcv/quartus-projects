@@ -62,52 +62,59 @@ begin
 	signature <= storage_reg;
 	sc_target <= STD_LOGIC_VECTOR(TO_UNSIGNED(2, 2));
 	
-	process(clk, rst, mod_ready)
+	process(clk, rst, mod_ready, mod_s)
 	begin
-		-- async reset
 		if rst = '1' then
 			storage_reg <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 16));
-			mod_rst <= 1;
-			-- TODO
-		-- if enabled
-		elsif mod_ready = '1' then
-			if rising_edge(clk) then
-				storage_reg <= mod_s;
+			mod_rst <= '1';
+		elsif rising_edge(clk) then
+			if mod_ready = '1' then
+				storage_reg	<= mod_s;
+				mod_rst		<= '1';
+			elsif mod_rst = '1' then
+				mod_rst		<= '0';
 			end if;
 		end if;
 	end process;
 	
-	process(clk, enable, sc_count, mod_start, mod_ready)
+	process(clk, enable, sc_count, mod_ready)
 	begin
 		if rising_edge(clk) then
 			if UNSIGNED(sc_count) = TO_UNSIGNED(0, 2) then
-				hash_enable_2	<= 0;
-				mod_start		<= 0;
+				hash_enable_2	<= '0';
+				mod_start		<= '0';
 				if enable = '1' then
-					hash_enable_1 <= 1;
+					hash_enable_1 <= '1';
 				else
-					hash_enable_1 <= 0;
+					hash_enable_1 <= '0';
 				end if;
 			elsif UNSIGNED(sc_count) = TO_UNSIGNED(1, 2) then
-				mod_start		<= 0;
+				mod_start 		<= '0';
 				if enable = '1' then
-					hash_enable_1 <= 1;
-					hash_enable_2 <= 1;
+					hash_enable_1 <= '1';
+					hash_enable_2 <= '1';
 				else
-					hash_enable_1 <= 0;
-					hash_enable_2 <= 0;
+					hash_enable_1 <= '0';
+					hash_enable_2 <= '0';
 				end if;
 			elsif UNSIGNED(sc_count) = TO_UNSIGNED(2, 2) then
+				-- TODO: check the logic here
 				if enable = '1' then
-					mod_start <= 1;
-					if mod_ready = '0' then
-						hash_enable_1 <= 0;
-						hash_enable_2 <= 0;
+					mod_start <= '1';
+					if mod_ready = '1' then
+						hash_enable_1 <= '1';
+						hash_enable_2 <= '1';
 					else
-						hash_enable_1 <= 1;
-						hash_enable_2 <= 1;
-					-- TODO
-	
-	
+						hash_enable_1 <= '0';
+						hash_enable_2 <= '0';
+					end if;
+				else
+					mod_start <= '0';
+					hash_enable_1 <= '0';
+					hash_enable_2 <= '0';
+				end if;
+			end if;
+		end if;
+	end process;
 end arch;
 

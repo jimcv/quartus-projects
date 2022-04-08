@@ -12,7 +12,7 @@ entity State_Counter is
 			count		:inout	std_logic_vector(1 downto 0));
 end State_Counter;
 
-architecture count of State__Counter is
+architecture count of State_Counter is
 begin
 	process(clk, reset, start)
 	begin
