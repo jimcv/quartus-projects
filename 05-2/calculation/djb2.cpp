@@ -36,17 +36,12 @@ unsigned int modExp(unsigned int c, unsigned int d, unsigned int n)
 
 int main()
 {
-  unsigned int hash1_32 = hash(123, 5381);
+  unsigned int hash1_32 = hash(2793406464, 5381);
   unsigned int hash1_10 = hash10(hash1_32);
   cout << "Hash32: " << hash1_32 << "; " << hex << hash1_32 << dec << endl;
   cout << "Hash10: " << hash1_10 << "; " << hex << hash1_10 << dec << endl;
   cout << endl;
-  unsigned int hash2_32 = hash(2281701376, 5381);
-  unsigned int hash2_10 = hash10(hash2_32);
-  cout << "Hash32: " << hash2_32 << "; " << hex << hash2_32 << dec << endl;
-  cout << "Hash10: " << hash2_10 << "; " << hex << hash2_10 << dec << endl;
-  cout << endl;
-  unsigned int mod_exp_1 = modExp(901, 5, 33401);
+  unsigned int mod_exp_1 = modExp(hash1_10, 13205, 33401);
   cout << "Signature: " << mod_exp_1;
   return 0;
 }
