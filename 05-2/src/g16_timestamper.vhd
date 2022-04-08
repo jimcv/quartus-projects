@@ -44,81 +44,59 @@ signal hash_enable_1, hash_enable_2:		std_logic;
 signal hash_in_2:									std_logic_vector(31 downto 0);
 signal hash_out_1, hash_out_2:				std_logic_vector(9 downto 0);
 signal mod_d:										std_logic_vector(13 downto 0);
-signal mod_start, mod_ready, mod_rst:		std_logic;
+signal mod_start, mod_ready:					std_logic;
 signal mod_s:										std_logic_vector(15 downto 0);
 signal storage_reg:								std_logic_vector(15 downto 0);
 signal sc_target, sc_count:					std_logic_Vector(1 downto 0);
-signal sc_done:									std_logic;
+signal sc_done, sc_enable:						std_logic;
 
 begin
 	-- component wiring
 	H1: g16_HASH10 port map (clk, rst, hash_enable_1, message, hash_out_1);
 	H2: g16_HASH10 port map (clk, rst, hash_enable_2, hash_in_2, hash_out_2);
-	M1: g16_mod_exp port map (mod_d, hash_out_2, mod_start, clk, mod_rst, mod_s, mod_ready);
-	SC: State_Counter port map (rst, enable, clk, sc_target, sc_done, sc_count);
+	M1: g16_mod_exp port map (mod_d, hash_out_2, mod_start, clk, rst, mod_s, mod_ready);
+	SC: State_Counter port map (rst, sc_enable, clk, sc_target, sc_done, sc_count);
 	-- concurrent wiring
 	hash_in_2 <= hash_out_1 & timestamp;
 	mod_d <= STD_LOGIC_VECTOR(TO_UNSIGNED(13205, 14));
 	signature <= storage_reg;
-	sc_target <= STD_LOGIC_VECTOR(TO_UNSIGNED(3, 2));
+	sc_target <= STD_LOGIC_VECTOR(TO_UNSIGNED(2, 2));
+	sc_enable <= NOT enable;
 	
 	process(clk, rst, mod_ready, mod_s)
 	begin
 		if rst = '1' then
 			storage_reg <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 16));
-			mod_rst <= '1';
 		elsif rising_edge(clk) then
 			if mod_ready = '1' then
 				storage_reg	<= mod_s;
-				mod_rst		<= '1';
-			elsif mod_rst = '1' then
-				mod_rst		<= '0';
 			end if;
 		end if;
 	end process;
 	
-	process(clk, rst, enable, sc_count, mod_ready)
+	process(clk, rst, enable, sc_count)
 	begin
 		if rst = '1' then
 			mod_start <= '0';
 			hash_enable_1 <= '0';
 			hash_enable_2 <= '0';
 		elsif rising_edge(clk) then
-			if UNSIGNED(sc_count) = TO_UNSIGNED(1, 2) then
-				hash_enable_2	<= '0';
-				mod_start		<= '0';
-				if enable = '1' then
-					hash_enable_1 <= '1';
-				else
-					hash_enable_1 <= '0';
-				end if;
-			elsif UNSIGNED(sc_count) = TO_UNSIGNED(2, 2) then
-				mod_start 		<= '0';
-				if enable = '1' then
-					hash_enable_1 <= '1';
+			if enable = '1' then
+				mod_start <= '0';
+				hash_enable_1 <= '1';
+				hash_enable_2 <= '0';
+			else
+				hash_enable_1 <= '0';
+				if UNSIGNED(sc_count) = TO_UNSIGNED(1, 2) then
 					hash_enable_2 <= '1';
-				else
-					hash_enable_1 <= '0';
-					hash_enable_2 <= '0';
-				end if;
-			elsif UNSIGNED(sc_count) = TO_UNSIGNED(3, 2) then
-				-- TODO: check the logic here
-				if enable = '1' then
-					mod_start <= '1';
-					if mod_ready = '1' then
-						hash_enable_1 <= '1';
-						hash_enable_2 <= '1';
-					else
-						hash_enable_1 <= '0';
-						hash_enable_2 <= '0';
-					end if;
-				else
 					mod_start <= '0';
-					hash_enable_1 <= '0';
+				elsif UNSIGNED(sc_count) = TO_UNSIGNED(2, 2) then
 					hash_enable_2 <= '0';
+					mod_start <= '1';
 				end if;
 			end if;
 		end if;
 	end process;
+	
 end arch;
 
