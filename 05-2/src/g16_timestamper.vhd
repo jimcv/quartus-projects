@@ -60,7 +60,7 @@ begin
 	hash_in_2 <= hash_out_1 & timestamp;
 	mod_d <= STD_LOGIC_VECTOR(TO_UNSIGNED(13205, 14));
 	signature <= storage_reg;
-	sc_target <= STD_LOGIC_VECTOR(TO_UNSIGNED(2, 2));
+	sc_target <= STD_LOGIC_VECTOR(TO_UNSIGNED(3, 2));
 	
 	process(clk, rst, mod_ready, mod_s)
 	begin
@@ -77,10 +77,14 @@ begin
 		end if;
 	end process;
 	
-	process(clk, enable, sc_count, mod_ready)
+	process(clk, rst, enable, sc_count, mod_ready)
 	begin
-		if rising_edge(clk) then
-			if UNSIGNED(sc_count) = TO_UNSIGNED(0, 2) then
+		if rst = '1' then
+			mod_start <= '0';
+			hash_enable_1 <= '0';
+			hash_enable_2 <= '0';
+		elsif rising_edge(clk) then
+			if UNSIGNED(sc_count) = TO_UNSIGNED(1, 2) then
 				hash_enable_2	<= '0';
 				mod_start		<= '0';
 				if enable = '1' then
@@ -88,7 +92,7 @@ begin
 				else
 					hash_enable_1 <= '0';
 				end if;
-			elsif UNSIGNED(sc_count) = TO_UNSIGNED(1, 2) then
+			elsif UNSIGNED(sc_count) = TO_UNSIGNED(2, 2) then
 				mod_start 		<= '0';
 				if enable = '1' then
 					hash_enable_1 <= '1';
@@ -97,7 +101,7 @@ begin
 					hash_enable_1 <= '0';
 					hash_enable_2 <= '0';
 				end if;
-			elsif UNSIGNED(sc_count) = TO_UNSIGNED(2, 2) then
+			elsif UNSIGNED(sc_count) = TO_UNSIGNED(3, 2) then
 				-- TODO: check the logic here
 				if enable = '1' then
 					mod_start <= '1';
