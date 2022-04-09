@@ -26,7 +26,8 @@
 -- 
 
 LIBRARY ieee;                                               
-USE ieee.std_logic_1164.all;                                
+USE ieee.std_logic_1164.all;
+use IEEE.NUMERIC_STD.ALL;                                
 
 ENTITY g16_timestamper_vhd_tst IS
 END g16_timestamper_vhd_tst;
@@ -60,18 +61,76 @@ BEGIN
 	signature => signature,
 	timestamp => timestamp
 	);
-init : PROCESS                                               
--- variable declarations                                     
-BEGIN                                                        
-        -- code that executes only once                      
-WAIT;                                                       
-END PROCESS init;                                           
-always : PROCESS                                              
--- optional sensitivity list                                  
--- (        )                                                 
--- variable declarations                                      
-BEGIN                                                         
-        -- code executes for every event on sensitivity list  
-WAIT;                                                        
-END PROCESS always;                                          
+
+	-- clock generation
+	clk_process: process
+	begin
+		clk <= '0';
+		wait for 1 ns;
+		clk <= '1';
+		wait for 1 ns;
+	end process clk_process;
+	
+	-- test process
+	always: process
+	begin
+		rst <= '1';
+		enable <= '1';
+		-- time is 2022/04/08 5:00PM, which is 195209 hours after 2000
+		timestamp <= STD_LOGIC_VECTOR(TO_UNSIGNED(195209, 22));
+		message <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 32));
+		wait for 10 ns;
+		-- start reading message: expected signature 22194
+		-- message chunk 1
+		rst <= '0';
+		message <= STD_LOGIC_VECTOR(TO_UNSIGNED(123, 32));
+		wait for 2 ns;
+		-- message chunk 2
+		message <= STD_LOGIC_VECTOR(TO_UNSIGNED(456, 32));
+		wait for 2 ns;
+		-- finish reading
+		enable <= '0';
+		wait for 300 us;
+		
+		-- reset
+		rst <= '1';
+		enable <= '1';
+		wait for 10 ns;
+		-- start reading message: expected signature 5059
+		-- message chunk 1
+		rst <= '0';
+		message <= STD_LOGIC_VECTOR(TO_UNSIGNED(2776, 32));
+		wait for 2 ns;
+		-- message chunk 2
+		message <= STD_LOGIC_VECTOR(TO_UNSIGNED(123456, 32));
+		wait for 2 ns;
+		-- message chunk 3
+		message <= STD_LOGIC_VECTOR(TO_UNSIGNED(987, 32));
+		wait for 2 ns;
+		-- finish reading
+		enable <= '0';
+		wait for 300 us;
+		
+		-- reset
+		rst <= '1';
+		enable <= '1';
+		wait for 10 ns;
+		-- start reading message: expected signature 14476
+		-- message chunk 1
+		rst <= '0';
+		message <= STD_LOGIC_VECTOR(TO_UNSIGNED(463758, 32));
+		wait for 2 ns;
+		-- message chunk 2
+		message <= STD_LOGIC_VECTOR(TO_UNSIGNED(44401, 32));
+		wait for 2 ns;
+		-- message chunk 3
+		message <= STD_LOGIC_VECTOR(TO_UNSIGNED(9667412, 32));
+		wait for 2 ns;
+		-- finish reading
+		enable <= '0';
+		wait for 300 us;
+		
+	wait;
+	end process always;
+	
 END g16_timestamper_arch;
