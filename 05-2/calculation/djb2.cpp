@@ -47,11 +47,13 @@ int main(int argc, char *argv[])
       oldHash_1 = hash32_1;
     }
     unsigned int hash10_1 = hash10(oldHash_1);
+    cout << "1st hash10: " << hash10_1 << endl;
     // concatenate timestamp, use 2022/04/08 5:00PM, which is 195209 hours after 2000
     unsigned int hash_input_2 = (hash10_1 << 22) + 195209;
     // 2nd hash function
     unsigned int hash32_2 = hash(hash_input_2, 5381);
     unsigned int hash10_2 = hash10(hash32_2);
+    cout << "2nd hash10: " << hash10_2 << endl;
     // exp circuit
     unsigned int mod_exp = modExp(hash10_2, 13205, 33401);
     cout << "Signature: " << mod_exp;
