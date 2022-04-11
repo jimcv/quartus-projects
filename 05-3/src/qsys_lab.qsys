@@ -17,12 +17,28 @@
          type = "int";
       }
    }
+   element HEX3_HEX0.s1
+   {
+      datum baseAddress
+      {
+         value = "32";
+         type = "String";
+      }
+   }
    element HEX5_HEX4
    {
       datum _sortIndex
       {
          value = "6";
          type = "int";
+      }
+   }
+   element HEX5_HEX4.s1
+   {
+      datum baseAddress
+      {
+         value = "16";
+         type = "String";
       }
    }
    element LEDS
@@ -33,12 +49,33 @@
          type = "int";
       }
    }
+   element LEDS.s1
+   {
+      datum baseAddress
+      {
+         value = "64";
+         type = "String";
+      }
+   }
    element PUSHBUTTONS
    {
       datum _sortIndex
       {
          value = "7";
          type = "int";
+      }
+   }
+   element PUSHBUTTONS.s1
+   {
+      datum _tags
+      {
+         value = "";
+         type = "String";
+      }
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
       }
    }
    element SRAM
@@ -49,12 +86,28 @@
          type = "int";
       }
    }
+   element SRAM.s1
+   {
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
+      }
+   }
    element SWITCHES
    {
       datum _sortIndex
       {
          value = "4";
          type = "int";
+      }
+   }
+   element SWITCHES.s1
+   {
+      datum baseAddress
+      {
+         value = "48";
+         type = "String";
       }
    }
    element clk_0
@@ -95,8 +148,33 @@
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
+ <interface
+   name="hex3_hex0"
+   internal="HEX3_HEX0.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="hex5_hex4"
+   internal="HEX5_HEX4.external_connection"
+   type="conduit"
+   dir="end" />
  <interface name="memory" internal="hps_0.memory" type="conduit" dir="end" />
+ <interface
+   name="pushbuttons"
+   internal="PUSHBUTTONS.external_connection"
+   type="conduit"
+   dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
+ <interface
+   name="rled"
+   internal="LEDS.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="switches"
+   internal="SWITCHES.external_connection"
+   type="conduit"
+   dir="end" />
  <module name="HEX3_HEX0" kind="altera_avalon_pio" version="20.1" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -754,7 +832,7 @@
    start="hps_0.h2f_lw_axi_master"
    end="LEDS.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="baseAddress" value="0x0040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -763,7 +841,7 @@
    start="hps_0.h2f_lw_axi_master"
    end="SWITCHES.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="baseAddress" value="0x0030" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -772,7 +850,7 @@
    start="hps_0.h2f_lw_axi_master"
    end="HEX3_HEX0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="baseAddress" value="0x0020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -781,7 +859,7 @@
    start="hps_0.h2f_lw_axi_master"
    end="HEX5_HEX4.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="baseAddress" value="0x0010" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -819,7 +897,7 @@
    version="20.1"
    start="hps_0.f2h_irq0"
    end="PUSHBUTTONS.irq">
-  <parameter name="irqNumber" value="0" />
+  <parameter name="irqNumber" value="1" />
  </connection>
  <connection
    kind="reset"
