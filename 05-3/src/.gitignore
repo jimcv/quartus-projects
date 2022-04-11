@@ -50,6 +50,7 @@ simulation/modelsim/*
 !*.vht
 
 ##
+!*.qsys
 !*.qprs
 !*.qpf
 !*.qsf
