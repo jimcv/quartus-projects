@@ -1,12 +1,12 @@
-#include <cstdlib>
-#include <cstdio>
 #include <iostream>
 #include <iomanip>
+#include <string>
 
 using std::cout;
+using std::dec;
 using std::endl;
 using std::hex;
-using std::dec;
+using std::stoul;
 
 unsigned int hash(unsigned int input, unsigned int oldHash)
 {
@@ -34,16 +34,33 @@ unsigned int modExp(unsigned int c, unsigned int d, unsigned int n)
   return s;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-  unsigned int hash1_32 = hash(2793406464, 5381);
-  unsigned int hash1_10 = hash10(hash1_32);
-  cout << "Hash32: " << hash1_32 << "; " << hex << hash1_32 << dec << endl;
-  cout << "Hash10: " << hash1_10 << "; " << hex << hash1_10 << dec << endl;
-  cout << endl;
-  unsigned int mod_exp_1 = modExp(hash1_10, 13205, 33401);
-  cout << "Signature: " << mod_exp_1;
+  if (argc > 1)
+  {
+    // 1st hash function, takes in message source in chunks
+    unsigned int oldHash_1 = 5381;
+    for (int i = 1; i < argc; i++)
+    {
+      unsigned int chunk = stoul(argv[i], nullptr, 10);
+      unsigned int hash32_1 = hash(chunk, oldHash_1);
+      oldHash_1 = hash32_1;
+    }
+    unsigned int hash10_1 = hash10(oldHash_1);
+    cout << "1st hash10: " << hash10_1 << endl;
+    // concatenate timestamp, use 2022/04/08 5:00PM, which is 195209 hours after 2000
+    unsigned int hash_input_2 = (hash10_1 << 22) + 195209;
+    // 2nd hash function
+    unsigned int hash32_2 = hash(hash_input_2, 5381);
+    unsigned int hash10_2 = hash10(hash32_2);
+    cout << "2nd hash10: " << hash10_2 << endl;
+    // exp circuit
+    unsigned int mod_exp = modExp(hash10_2, 13205, 33401);
+    cout << "Signature: " << mod_exp;
+  }
+  else
+  {
+    cout << "Please enter a message (as blocks of 32-bits base-10 unsigned integer, separated by space)" << endl;
+  }
   return 0;
 }
-
-
