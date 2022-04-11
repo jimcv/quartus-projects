@@ -1,6 +1,0 @@
-#
-# https://help.github.com/articles/dealing-with-line-endings/
-#
-# Normalize working tree to CRLF
-* text=auto eol=crlf
-
